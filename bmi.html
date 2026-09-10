@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f5;
+        }
+        .calculator-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 320px;
+        }
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        #result-container {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            display: none; /* Hidden until calculation */
+        }
+        #bmi-value {
+            font-weight: bold;
+            font-size: 24px;
+        }
+        #category {
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        .error {
+            color: #dc2626;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-card">
+        <h2>BMI Calculator</h2>
+
+        <div class="input-group">
+            <label for="weight">Weight (Kg)</label>
+            <input type="number" id="weight" step="0.1" placeholder="e.g., 75.5">
+        </div>
+
+        <div class="input-group">
+            <label for="height">Height (m)</label>
+            <input type="number" id="height" step="0.01" placeholder="e.g., 1.75">
+        </div>
+
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div id="error-message" class="error"></div>
+
+        <div id="result-container">
+            <div>Your BMI is:</div>
+            <div id="bmi-value"></div>
+            <div id="category"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            // 1. Get input values
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            
+            // DOM elements for output
+            const resultContainer = document.getElementById('result-container');
+            const bmiValueEl = document.getElementById('bmi-value');
+            const categoryEl = document.getElementById('category');
+            const errorEl = document.getElementById('error-message');
+
+            // Reset outputs
+            errorEl.innerText = '';
+            resultContainer.style.display = 'none';
+
+            // 2. Validate inputs
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                errorEl.innerText = "Please enter valid positive numbers for both fields.";
+                return;
+            }
+
+            // 3. Calculate BMI
+            const bmi = weight / (height * height);
+
+            // 4. Determine category and UI color based on ranges
+            let category = "";
+            let color = "";
+
+            if (bmi < 18.5) {
+                category = "Underweight";
+                color = "#eab308"; // Yellow/Orange
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                category = "Healthy / Normal Weight";
+                color = "#16a34a"; // Green
+            } else if (bmi >= 25.0 && bmi <= 29.9) {
+                category = "Overweight";
+                color = "#f97316"; // Orange
+            } else { // 30.0 and above
+                category = "Obese";
+                color = "#dc2626"; // Red
+            }
+
+            // 5. Display results
+            bmiValueEl.innerText = bmi.toFixed(1); // Round to 1 decimal place
+            categoryEl.innerText = category;
+            categoryEl.style.color = color;
+            
+            resultContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
