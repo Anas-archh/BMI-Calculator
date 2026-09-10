@@ -63,7 +63,7 @@
             margin-top: 20px;
             text-align: center;
             font-size: 18px;
-            display: none; /* Hidden until calculation */
+            display: none;
         }
         #bmi-value {
             font-weight: bold;
@@ -109,49 +109,42 @@
 
     <script>
         function calculateBMI() {
-            // 1. Get input values
             const weight = parseFloat(document.getElementById('weight').value);
             const height = parseFloat(document.getElementById('height').value);
             
-            // DOM elements for output
             const resultContainer = document.getElementById('result-container');
             const bmiValueEl = document.getElementById('bmi-value');
             const categoryEl = document.getElementById('category');
             const errorEl = document.getElementById('error-message');
 
-            // Reset outputs
             errorEl.innerText = '';
             resultContainer.style.display = 'none';
 
-            // 2. Validate inputs
             if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
                 errorEl.innerText = "Please enter valid positive numbers for both fields.";
                 return;
             }
 
-            // 3. Calculate BMI
             const bmi = weight / (height * height);
 
-            // 4. Determine category and UI color based on ranges
             let category = "";
             let color = "";
 
             if (bmi < 18.5) {
                 category = "Underweight";
-                color = "#eab308"; // Yellow/Orange
+                color = "#eab308";
             } else if (bmi >= 18.5 && bmi <= 24.9) {
                 category = "Healthy / Normal Weight";
-                color = "#16a34a"; // Green
+                color = "#16a34a";
             } else if (bmi >= 25.0 && bmi <= 29.9) {
                 category = "Overweight";
-                color = "#f97316"; // Orange
-            } else { // 30.0 and above
+                color = "#f97316";
+            } else {
                 category = "Obese";
-                color = "#dc2626"; // Red
+                color = "#dc2626";
             }
 
-            // 5. Display results
-            bmiValueEl.innerText = bmi.toFixed(1); // Round to 1 decimal place
+            bmiValueEl.innerText = bmi.toFixed(1);
             categoryEl.innerText = category;
             categoryEl.style.color = color;
             
